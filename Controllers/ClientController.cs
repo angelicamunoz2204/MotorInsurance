@@ -1,9 +1,11 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MotorInsurance.Models;
 using MotorInsurance.Services.Clients;
 
 namespace motorInsurance.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("api/[controller]")]
     public class ClientController : ControllerBase
@@ -15,7 +17,7 @@ namespace motorInsurance.Controllers
             _service = service;
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("{clientId}")]
         public async Task<IActionResult> GetById(string clientId)
         {
             var client = await _service.GetById(clientId);

@@ -2,9 +2,7 @@ namespace MotorInsurance.Services.Exceptions
 {
     public class InvalidDateException: Exception
     {
-        public InvalidDateException() : base() {}
-
-        public InvalidDateException(string modelName, string id) : base("The end date is wrong"){}
+        public InvalidDateException() : base("The insurance doesn't have effect using these dates") {}
         
     }
 }

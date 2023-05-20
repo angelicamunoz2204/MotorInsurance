@@ -35,6 +35,9 @@ namespace MotorInsurance.Helpers
                 case NotExistentException e:
                     response.StatusCode = (int)HttpStatusCode.BadRequest;
                     break;
+                case InvalidDateException e:
+                    response.StatusCode = (int)HttpStatusCode.BadRequest;
+                    break;
                 case KeyNotFoundException e:
                     response.StatusCode = (int)HttpStatusCode.NotFound;
                     break;
