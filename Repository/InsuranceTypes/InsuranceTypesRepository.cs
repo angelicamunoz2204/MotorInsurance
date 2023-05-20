@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using MotorInsurance.Models;
 using MongoDB.Driver;
 
@@ -17,14 +13,16 @@ namespace MotorInsurance.Repository.InsuranceTypes
             _insuranceTypeCollection = mongoDatabase.GetCollection<InsuranceType>("insuranceTypes");
         }
 
-        public Task Create(InsuranceType insuranceType)
+        public async Task<InsuranceType> Create(InsuranceType insuranceType)
         {
-            return _insuranceTypeCollection.InsertOneAsync(insuranceType);
+            await _insuranceTypeCollection.InsertOneAsync(insuranceType);
+            return insuranceType;
         }
 
-        public Task Delete(string insuranceTypeId)
+        public async Task<InsuranceType> Delete(string insuranceTypeId)
         {
-            return _insuranceTypeCollection.DeleteOneAsync(x => x.InsuranceTypeID == insuranceTypeId);
+            await _insuranceTypeCollection.DeleteOneAsync(x => x.InsuranceTypeID == insuranceTypeId);
+            return null;
         }
 
         public async Task<InsuranceType> GetById(string insuranceTypeId)
@@ -37,9 +35,10 @@ namespace MotorInsurance.Repository.InsuranceTypes
             return await _insuranceTypeCollection.Find(x => true).ToListAsync();
         }
 
-        public Task Update(InsuranceType insuranceType)
+        public async Task<InsuranceType> Update(InsuranceType insuranceType)
         {
-            return _insuranceTypeCollection.ReplaceOneAsync(x => x.InsuranceTypeID == insuranceType.InsuranceTypeID, insuranceType);
+            await _insuranceTypeCollection.ReplaceOneAsync(x => x.InsuranceTypeID == insuranceType.InsuranceTypeID, insuranceType);
+            return insuranceType;
         }
     }
 }

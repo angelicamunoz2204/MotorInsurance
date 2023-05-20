@@ -6,8 +6,8 @@ namespace MotorInsurance.Repository.Clients
     {
         Task<Client> GetById(string clientId);
         Task<List<Client>> GetAll();
-        Task Create(Client client);
-        Task Update(Client client);
-        Task Delete(string clientId);
+        Task<Client> Create(Client client);
+        Task<Client> Update(Client client);
+        Task<Client> Delete(string clientId);
     }
 }

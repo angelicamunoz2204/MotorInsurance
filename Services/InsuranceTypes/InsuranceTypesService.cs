@@ -1,5 +1,6 @@
 using MotorInsurance.Models;
 using MotorInsurance.Repository.InsuranceTypes;
+using MotorInsurance.Services.Exceptions;
 
 namespace MotorInsurance.Services.InsuranceTypes
 {
@@ -11,14 +12,21 @@ namespace MotorInsurance.Services.InsuranceTypes
         {
             _repository = repository;
         }
-        public Task Create(InsuranceType insuranceType)
+        public Task<InsuranceType> Create(InsuranceType insuranceType)
         {
             return this._repository.Create(insuranceType);
         }
 
-        public Task Delete(string insuranceTypeId)
+        public async Task<InsuranceType> Delete(string insuranceTypeId)
         {
-            return this._repository.Delete(insuranceTypeId);
+            var insuranceType = await this._repository.GetById(insuranceTypeId);
+
+            if(insuranceType == null)
+            {
+                throw new NotExistentException("insurance type", insuranceTypeId);
+            }
+
+            return null;
         }
 
         public Task<List<InsuranceType>> GetAll()
@@ -26,14 +34,29 @@ namespace MotorInsurance.Services.InsuranceTypes
             return this._repository.GetAll();
         }
 
-        public Task<InsuranceType> GetById(string insuranceTypeId)
+        public async Task<InsuranceType> GetById(string insuranceTypeId)
         {
-            return this._repository.GetById(insuranceTypeId);
+            var insuranceType = await this._repository.GetById(insuranceTypeId);
+
+            if(insuranceType == null)
+            {
+                throw new NotExistentException("insurance type", insuranceTypeId);
+            }
+
+            return insuranceType;
         }
 
-        public Task Update(InsuranceType insuranceType)
+        public async Task<InsuranceType> Update(InsuranceType insuranceType)
         {
-            return this._repository.Update(insuranceType);
+            var insuranceTypeId = insuranceType.InsuranceTypeID;
+            var insuranceTypeU = await this._repository.GetById(insuranceTypeId);
+
+            if(insuranceTypeU == null)
+            {
+                throw new NotExistentException("insurance type", insuranceTypeId);
+            }
+
+            return insuranceTypeU;
         }
     }
 }

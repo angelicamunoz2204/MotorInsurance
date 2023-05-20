@@ -6,8 +6,8 @@ namespace MotorInsurance.Services.Vehicles
     {
         Task<Vehicle> GetByPlate(string licensePlate);
         Task<List<Vehicle>> GetAll();
-        Task Create(Vehicle vehicle);
-        Task Update(Vehicle vehicle);
-        Task Delete(string licensePlate);
+        Task<Vehicle> Create(Vehicle vehicle);
+        Task<Vehicle> Update(Vehicle vehicle);
+        Task<Vehicle> Delete(string licensePlate);
     }
 }

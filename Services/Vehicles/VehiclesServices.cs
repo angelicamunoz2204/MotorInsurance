@@ -1,5 +1,6 @@
 using MotorInsurance.Models;
 using MotorInsurance.Repository.Vehicles;
+using MotorInsurance.Services.Exceptions;
 
 namespace MotorInsurance.Services.Vehicles
 {
@@ -11,29 +12,52 @@ namespace MotorInsurance.Services.Vehicles
         {
             _repository = repository;
         }   
-        public Task Create(Vehicle vehicle)
+        public async Task<Vehicle> Create(Vehicle vehicle)
         {
-            return this._repository.Create(vehicle);
+            return await this._repository.Create(vehicle);
         }
 
-        public Task Delete(string licensePlate)
+        public async Task<Vehicle> Delete(string licensePlate)
         {
-            return this._repository.Delete(licensePlate);
+            var vehicle = await this._repository.GetByPlate(licensePlate);
+
+            if(vehicle == null)
+            {
+                throw new NotExistentException("vehicle", licensePlate);
+            }
+
+            await this._repository.Delete(licensePlate);
+            return null;
         }
 
         public Task<List<Vehicle>> GetAll()
         {
             return this._repository.GetAll();
+        }      
+
+        public async Task<Vehicle> GetByPlate(string licensePlate)
+        {
+            var vehicle = await this._repository.GetByPlate(licensePlate);
+
+            if(vehicle == null)
+            {
+                throw new NotExistentException("vehicle", licensePlate);
+            }
+
+            return vehicle;
         }
 
-        public Task<Vehicle> GetByPlate(string licensePlate)
+        public async Task<Vehicle> Update(Vehicle vehicle)
         {
-            return this._repository.GetByPlate(licensePlate);
-        }
+            var vehicleLicensePlate = vehicle.LicensePlate;
+            var vehicleU = await this._repository.GetByPlate(vehicleLicensePlate);
 
-        public Task Update(Vehicle vehicle)
-        {
-            return this._repository.Update(vehicle);
+            if(vehicleU == null)
+            {
+                throw new NotExistentException("vehicle", vehicleLicensePlate);
+            }
+
+            return await this._repository.Update(vehicle);
         }
     }
 }

@@ -11,7 +11,5 @@ namespace MotorInsurance.Models
         public int Model { get; set; }
         [BsonElement("inspection")]
         public bool Inspection { get; set; }
-        [BsonElement("insurance")]
-        public Insurance Insurance { get; set; }
     }
 }

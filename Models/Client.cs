@@ -16,7 +16,5 @@ namespace MotorInsurance.Models
         public string City { get; set; }
         [BsonElement("address")]
         public string Address { get; set; }
-        [BsonElement("vehicle")]
-        public Vehicle Vehicle { get; set; }
     }
 }

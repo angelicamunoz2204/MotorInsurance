@@ -11,14 +11,16 @@ namespace MotorInsurance.Repository.Clients
         {
             _clientCollection = mongoDatabase.GetCollection<Client>("clients");
         }
-        public Task Create(Client client)
+        public async Task<Client> Create(Client client)
         {
-            return _clientCollection.InsertOneAsync(client);
+            await _clientCollection.InsertOneAsync(client);
+            return client;
         }
 
-        public Task Delete(string clientId)
+        public async Task<Client> Delete(string clientId)
         {
-            return _clientCollection.DeleteOneAsync(x => x.ClientID == clientId);
+            await _clientCollection.DeleteOneAsync(x => x.ClientID == clientId);
+            return null;
         }
 
         public async Task<List<Client>> GetAll()
@@ -31,9 +33,10 @@ namespace MotorInsurance.Repository.Clients
             return await _clientCollection.Find(x => x.ClientID == clientId).FirstOrDefaultAsync();
         }
 
-        public Task Update(Client client)
+        public async Task<Client> Update(Client client)
         {
-            return _clientCollection.ReplaceOneAsync(x => x.ClientID == client.ClientID, client);
+            await _clientCollection.ReplaceOneAsync(x => x.ClientID == client.ClientID, client);
+            return client;
         }
     }
 }

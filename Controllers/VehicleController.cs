@@ -19,11 +19,6 @@ namespace motorInsurance.Controllers
         public async Task<IActionResult> GetByPlate(string licensePlate)
         {
             var vehicle = await _service.GetByPlate(licensePlate);
-            if(vehicle == null)
-            {
-                return NotFound();
-            }
-
             return Ok(vehicle);  
         }
 
@@ -44,12 +39,6 @@ namespace motorInsurance.Controllers
         [HttpDelete]
         public async Task<IActionResult> Delete(string licensePlate)
         {
-            var vehicle = await _service.GetByPlate(licensePlate);
-            if(vehicle == null)
-            {
-                return NotFound();
-            }
-
             await _service.Delete(licensePlate);
             return Ok($"vehicle type with license plate {licensePlate} was deleted.");
         }
@@ -57,13 +46,6 @@ namespace motorInsurance.Controllers
         [HttpPut]
         public async Task<IActionResult> Update(Vehicle vehicle)
         {
-            var vehicleU = await _service.GetByPlate(vehicle.LicensePlate);
-
-            if(vehicleU == null)
-            {
-                return NotFound();
-            }
-
             await _service.Update(vehicle);
             return Ok($"vehicle with license plate {vehicle.LicensePlate} was updated.");
         }

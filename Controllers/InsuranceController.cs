@@ -19,11 +19,13 @@ namespace motorInsurance.Controllers
         public async Task<IActionResult> GetById(string insuranceId)
         {
             var insurance = await _service.GetById(insuranceId);
-            if(insurance == null)
-            {
-                return NotFound();
-            }
+            return Ok(insurance);  
+        }
 
+        [HttpGet("licenseSearch/{vehicleLicensePlate}")]
+        public async Task<IActionResult> GetByVehicleLicensePlate(string vehicleLicensePlate)
+        {
+            var insurance = await _service.GetByVehicleLicensePlate(vehicleLicensePlate);
             return Ok(insurance);  
         }
 
@@ -44,12 +46,6 @@ namespace motorInsurance.Controllers
         [HttpDelete]
         public async Task<IActionResult> Delete(string insuranceId)
         {
-            var insurance = await _service.GetById(insuranceId);
-            if(insurance == null)
-            {
-                return NotFound();
-            }
-
             await _service.Delete(insuranceId);
             return Ok($"insurance type with id {insuranceId} was deleted.");
         }
@@ -57,13 +53,6 @@ namespace motorInsurance.Controllers
         [HttpPut]
         public async Task<IActionResult> Update(Insurance insurance)
         {
-            var insuranceU = await _service.GetById(insurance.InsuranceID);
-
-            if(insuranceU == null)
-            {
-                return NotFound();
-            }
-
             await _service.Update(insurance);
             return Ok($"insurance with id {insurance.InsuranceID} was updated.");
         }

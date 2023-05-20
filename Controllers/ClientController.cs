@@ -19,11 +19,6 @@ namespace motorInsurance.Controllers
         public async Task<IActionResult> GetById(string clientId)
         {
             var client = await _service.GetById(clientId);
-            if(client == null)
-            {
-                return NotFound();
-            }
-
             return Ok(client);  
         }
 
@@ -44,12 +39,6 @@ namespace motorInsurance.Controllers
         [HttpDelete]
         public async Task<IActionResult> Delete(string clientId)
         {
-            var client = await _service.GetById(clientId);
-            if(client == null)
-            {
-                return NotFound();
-            }
-
             await _service.Delete(clientId);
             return Ok($"client type with id {clientId} was deleted.");
         }
@@ -57,13 +46,6 @@ namespace motorInsurance.Controllers
         [HttpPut]
         public async Task<IActionResult> Update(Client client)
         {
-            var clientU = await _service.GetById(client.ClientID);
-
-            if(clientU == null)
-            {
-                return NotFound();
-            }
-
             await _service.Update(client);
             return Ok($"client with id {client.ClientID} was updated.");
         }

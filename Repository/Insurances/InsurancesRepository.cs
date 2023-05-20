@@ -11,14 +11,16 @@ namespace MotorInsurance.Repository.Insurances
         {
             _insuranceCollection = mongoDatabase.GetCollection<Insurance>("insurances");
         }
-        public Task Create(Insurance insurance)
+        public async Task<Insurance> Create(Insurance insurance)
         {
-            return _insuranceCollection.InsertOneAsync(insurance);
+            await _insuranceCollection.InsertOneAsync(insurance);
+            return insurance;
         }
 
-        public Task Delete(string insuranceId)
+        public async Task<Insurance> Delete(string insuranceId)
         {
-            return _insuranceCollection.DeleteOneAsync(x => x.InsuranceID == insuranceId);
+            await _insuranceCollection.DeleteOneAsync(x => x.InsuranceID == insuranceId);
+            return null;
         }
 
         public async Task<List<Insurance>> GetAll()
@@ -31,9 +33,15 @@ namespace MotorInsurance.Repository.Insurances
             return await _insuranceCollection.Find(x => x.InsuranceID == insuranceId).FirstOrDefaultAsync();
         }
 
-        public Task Update(Insurance insurance)
+        public async Task<Insurance> GetByVehicleLicensePlate(string vehicleLicensePLate)
         {
-            return _insuranceCollection.ReplaceOneAsync(x => x.InsuranceID == insurance.InsuranceID, insurance);
+            return await _insuranceCollection.Find(x => x.Vehicle.LicensePlate == vehicleLicensePLate).FirstOrDefaultAsync();
+        }
+
+        public async Task<Insurance> Update(Insurance insurance)
+        {
+            await _insuranceCollection.ReplaceOneAsync(x => x.InsuranceID == insurance.InsuranceID, insurance);
+            return insurance;
         }
     }
 }

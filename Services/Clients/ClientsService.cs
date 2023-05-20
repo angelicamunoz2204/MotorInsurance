@@ -1,5 +1,6 @@
 using MotorInsurance.Models;
 using MotorInsurance.Repository.Clients;
+using MotorInsurance.Services.Exceptions;
 
 namespace MotorInsurance.Services.Clients
 {
@@ -11,14 +12,20 @@ namespace MotorInsurance.Services.Clients
         {
             _repository = repository;
         }        
-        public Task Create(Client client)
+        public async Task<Client> Create(Client client)
         {
-            return this._repository.Create(client);
+            return await this._repository.Create(client);
         }
 
-        public Task Delete(string clientId)
+        public async Task<Client> Delete(string clientId)
         {
-            return this._repository.Delete(clientId);
+            var client = await _repository.GetById(clientId);
+            if(client == null)
+            {
+                throw new NotExistentException("client", clientId);
+            }
+
+            return await this._repository.Delete(clientId);
         }
 
         public Task<List<Client>> GetAll()
@@ -26,15 +33,27 @@ namespace MotorInsurance.Services.Clients
             return this._repository.GetAll();
         }
 
-        public Task<Client> GetById(string clientId)
-        {
-            return this._repository.GetById(clientId);
-    
+        public async Task<Client> GetById(string clientId)
+        {   
+            var client = await _repository.GetById(clientId);
+            if(client == null)
+            {
+                throw new NotExistentException("client", clientId);
+            }
+
+            return await this._repository.GetById(clientId);
         }
 
-        public Task Update(Client client)
+        public async Task<Client> Update(Client client)
         {
-            return this._repository.Update(client);
+            var clientId = client.ClientID;
+            var clientU = await _repository.GetById(clientId);
+            if(clientU == null)
+            {
+                throw new NotExistentException("client", clientId);
+            }
+
+            return await this._repository.Update(client);
         }
     }
 }

@@ -1,5 +1,6 @@
 using MongoDB.Driver;
 using MotorInsurance.Database;
+using MotorInsurance.Helpers;
 using MotorInsurance.Repository.Clients;
 using MotorInsurance.Repository.Insurances;
 using MotorInsurance.Repository.InsuranceTypes;
@@ -53,6 +54,8 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
+
+app.UseMiddleware<ExceptionHandlerMiddleware>();
 
 app.MapControllers();
 
